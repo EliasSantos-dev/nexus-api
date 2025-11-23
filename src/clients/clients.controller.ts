@@ -2,11 +2,18 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ClientsService } from './clients.service';
 import { CreateClientDto } from './dto/create-client.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @ApiTags('Clientes')
 @Controller('clients')
 export class ClientsController {
-  constructor(private readonly clientsService: ClientsService) {}
+  constructor(private readonly clientsService: ClientsService, private readonly prisma: PrismaService) {}
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Busca dados completos do cliente (Saldo)' })
+  findOne(@Param('id') id: string) {
+    return this.prisma.user.findUnique({ where: { id } });
+  }
 
   @Post()
   @ApiOperation({ summary: 'Cadastra um novo correntista' })
@@ -29,4 +36,6 @@ export class ClientsController {
   findByPix(@Param('key') key: string) {
     return this.clientsService.findByPix(key);
   }
+
+
 }

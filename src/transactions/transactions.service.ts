@@ -79,4 +79,21 @@ export class TransactionsService {
         throw new InternalServerErrorException('Falha no processamento da transação');
     }
   }
+
+  async findAllByUser(userId: string) {
+    return this.prisma.transfer.findMany({
+      where: {
+        OR: [
+          { senderId: userId },
+          { receiverId: userId }
+        ]
+      },
+      orderBy: { createdAt: 'desc' }, // Mais recentes primeiro
+      include: {
+        sender: { select: { fullName: true } },
+        receiver: { select: { fullName: true } }
+      },
+      take: 20, // Limita às últimas 20
+    });
+  }
 }

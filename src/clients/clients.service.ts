@@ -22,13 +22,13 @@ export class ClientsService {
       throw new ConflictException('Email ou Chave PIX já cadastrados.');
     }
 
-    return this.prisma.user.create({
-      data: {
-        fullName: dto.fullName,
-        email: dto.email,
-        pixKey: dto.pixKey,
-        balance: 0, // Começa com zero
-      },
+return this.prisma.user.create({
+    data: {
+      fullName: dto.fullName,
+      email: dto.email,
+      pixKey: dto.pixKey,
+      balance: 100000, // 🤑 Começa com 100k (Saldo de Teste)
+    },
     });
   }
 

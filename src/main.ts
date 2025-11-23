@@ -6,6 +6,14 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.enableCors({
+    origin: true, // "true" reflete a origem da requisição (aceita tudo)
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
+
+  app.setGlobalPrefix('api');
+
   // Ativa validação automática dos DTOs
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true, // Remove campos que não estão no DTO
